@@ -1,0 +1,79 @@
+<html>
+<head>
+    <link rel="stylesheet" href="index.css">
+</head>
+
+<body>
+
+
+    <span><b>Nombre:</b></span>&nbsp;
+    <input type="text" id="txtnombre"/>
+    <span><b>Apellido:</b></span>&nbsp;
+    <input type="text" id="txtapellido"/>
+    <span><b>Teléfono:</b></span>&nbsp;
+    <input type="text" id="txttelefono"/>
+    <br>
+    <button onclick="agregarContacto()">Agregar</button>
+    <br><br>
+
+    <table id="estructura">
+        <tr>
+            <th id="primera">Nombre</th>
+            <th id="segunda">Apellido</th>
+            <th id="tercera">Telefono</th>
+        </tr>
+   </table>
+   <table id="datos">
+        <tr>
+            <th id="cuarta">Cargando...</th>
+            <th id="quinta">Cargando...</th>
+            <th>Cargando...</th>
+        </tr>
+   </table>
+    
+
+<script>
+    let url = 'http://www.raydelto.org/agenda.php'
+    fetch(url)
+    .then(respuesta => respuesta.json())
+    .then(datos => mostrarDatos(datos))
+
+    const mostrarDatos = (datos) => {
+        console.log(datos)
+        let cuerpo
+        for (let i = 0; i<datos.length; i++){
+            
+            cuerpo += `<tr><td>${datos[i].nombre}</td><td>${datos[i].apellido}<td>${datos[i].telefono}</td></td></tr>`
+
+        document.getElementById('datos').innerHTML = cuerpo
+    }
+
+    
+}
+
+function agregarContacto(){
+    var nombre = document.getElementById('txtnombre');
+    var apellido = document.getElementById('txtapellido');
+    var telefono = document.getElementById('txttelefono');
+
+    var detalle = {
+        method: "POST",
+        body: JSON.stringify({
+            "nombre": nombre.value,
+            "apellido": apellido.value,
+            "telefono": telefono.value
+        }
+
+        )
+    }
+
+    fetch('http://www.raydelto.org/agenda.php', detalle)
+    .then(function (respuesta){
+        return respuesta.json();
+    })
+}
+</script>
+
+
+</body>
+</html>
